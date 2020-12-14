@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flu_demo/BaseDefine/sq_color.dart';
+import 'package:flu_demo/login/login_scene.dart';
 import 'package:flu_demo/Mine/me_scene.dart';
 import 'package:flutter/material.dart';
 
@@ -9,13 +10,17 @@ class MineHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return MineScene();
-        }));
+        bool isLogin = false;
+        if (isLogin) {
+        } else {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return LoginScene();
+          }));
+        }
       },
       child: Container(
-        color: SQColor.white,
-        padding: EdgeInsets.fromLTRB(20, 30, 15, 15),
+        color: SQColor.lightGray,
+        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         child: Row(
           children: [
             CircleAvatar(
@@ -31,7 +36,9 @@ class MineHeader extends StatelessWidget {
                 children: [
                   Text(
                     '登录',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -51,6 +58,9 @@ class MineHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         //buildItem
+        buildItem('0.0', '书豆余额'),
+        buildItem('0', '书券（张）'),
+        buildItem('0', '月票'),
       ],
     );
   }

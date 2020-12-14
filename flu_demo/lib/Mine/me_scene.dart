@@ -3,6 +3,8 @@ import 'package:flu_demo/Mine/me_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'me_header.dart';
+
 class MineScene extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,6 +14,7 @@ class MineScene extends StatelessWidget {
             color: Colors.white,
             child: ListView(
               children: [
+                MineHeader(),
                 SizedBox(height: 10),
                 buildCells(context),
               ],

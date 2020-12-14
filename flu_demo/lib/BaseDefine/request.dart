@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
 class TestRequest {
+  // static const String baseUrl = 'https://neiwangwms.ydcfo.com/';
   static const String baseUrl = 'https://neiwangwms.ydcfo.com/';
 
   static Future<dynamic> get({String action, Map params}) async {
