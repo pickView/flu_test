@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flu_demo/BaseDefine/sq_color.dart';
 import 'package:flu_demo/Mine/me_scene.dart';
+import 'package:flu_demo/Third/wechat_manager.dart';
 import 'package:flu_demo/login/Model/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,11 @@ class _RootSceneState extends State<RootScene> {
 
     setupApp();
     login();
+    wechatRegistered();
+  }
+
+  wechatRegistered() {
+    WechatManager.instance;
   }
 
   setupApp() async {
@@ -43,12 +50,16 @@ class _RootSceneState extends State<RootScene> {
     try {
       Response response = await Dio().post(
         'https://neiwang2.ydcfo.com/CXF/rs/direct/sys/user/token/get',
-        data: {'username': 'jinzhu', 'password': '123456', 'deviceType': 'iOS'},
+        data: {
+          'username': 'tuopan_byy',
+          'password': '123456',
+          'deviceType': 'iOS'
+        },
       );
-      Map userMap = response.data.decode(response.data);
-      var user = new UserModel.fromJson(userMap);
+      Map result = json.decode(response.toString());
+      var user = new UserModel.fromJson(result['data']);
       UserManager.instance.user = user;
-      print('token + ${user.token}');
+      print('token + ${UserManager.instance.user.token}');
 
       ///响应数据
     } catch (e) {

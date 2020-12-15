@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flu_demo/Third/wechat_manager.dart';
 import 'package:flu_demo/login/Model/user_model.dart';
 import 'package:flu_demo/login/code_button.dart';
 import 'package:flutter/material.dart';
@@ -24,20 +25,81 @@ class _LoginSceneState extends State<LoginScene> {
       print('电话号码不能为空');
       return;
     }
+
     try {
       Response response = await Dio().post(
-          'https://neiwang2.ydcfo.com/CXF/rs/direct/sys/user/token/get',
+          'https://neiwangwms.ydcfo.com/wms/xs/payment/order/create?access_token=${UserManager.currentUser.token}',
           data: {
-            'username': 'jinzhu',
-            'password': '123456',
-            'deviceType': 'iOS'
+            "createBy": "tuopan_byy",
+            "totalAmount": 229351.8,
+            "detailVOList": [
+              {
+                "billingCode": "YZD202012010001",
+                "payAmt": 229351.8,
+                "channelAmt": 0,
+                "payStatus": 0,
+                "profitAmt": 693.3,
+                "billingId": "629901",
+                "profitReceiveAmt": 0
+              }
+            ],
+            "totalProfitAmt": 693.3,
+            "frontEnd": "app",
+            "ownerId": 48957,
+            "tenantId": 48957,
+            "payWay": "WECHAT",
+            "payType": "APP",
+            "enableWriteOff": false,
+            "payUserId": 48401,
+            "source": "XS",
+            "fromPlatform": false,
+            "advanceAmount": 0,
+            "currency": "RMB",
+            "totalChannelAmt": 0,
           });
       Map result = json.decode(response.toString());
-      print(result['data']);
-      // Map userMap = json.decode(result['data']);
-      var user = new UserModel.fromJson(result['data']);
-      UserManager.instance.user = user;
-      print('token + ${UserManager.instance.user.token}');
+      print('payment/order/create + ${result}\n\n');
+
+      Response response1 = await Dio().put(
+        'https://neiwangwms.ydcfo.com/wms/xs/payment/sign?access_token=${UserManager.currentUser.token}',
+        data: {
+          "payWay": "WECHAT",
+          "payType": "APP",
+          "frontEnd": "app",
+          "tenantId": '48957',
+          "xsOwnerId": '48401',
+          "sourceBatchNo": result['data']['orderPayNo'],
+          "orderPayNo": result['data']['orderPayNo'],
+        },
+      );
+      Map result1 = json.decode(response1.toString());
+      print('xs/payment/sign + ${result1}\n\n');
+
+      WechatManager.instance.pay(
+        appId: 'wxd8408f4f68029d35',
+        partnerId: '1482666592',
+        prepayId: result1['data']['prepay_id'],
+        package: 'Sign=WXPay',
+        nonceStr: result1['data']['nonceStr'],
+        timeStamp: result1['data']['timeStamp'],
+        sign: result1['data']['sign'],
+      );
+
+      // "payWay" : "WECHAT",
+      // "payType" : "APP",
+      // "frontEnd" : "app",
+      // "tenantId" : 48957,
+      // "xsOwnerId" : 48401,
+      // "sourceBatchNo" : "YCZD20201215101119333323",
+      // "orderPayNo" : "YCZD20201215101119333323"
+
+      // PayReq *req   = [[PayReq alloc] init];
+      //   req.partnerId = @"1482666592";
+      //   req.package   = @"Sign=WXPay";
+      // req.prepayId  = result[@"prepay_id"];
+      //   req.sign      = result[@"sign"];
+      //   req.timeStamp = [result[@"timeStamp"] intValue];
+      //   req.nonceStr  = result[@"nonceStr"];
 
       ///响应数据
     } catch (e) {
