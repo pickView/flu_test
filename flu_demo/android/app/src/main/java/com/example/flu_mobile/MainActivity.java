@@ -1,4 +1,4 @@
-package com.example.flu_demo;
+package com.miaozhang.mobile;
 
 import io.flutter.embedding.android.FlutterActivity;
 

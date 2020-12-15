@@ -58,7 +58,7 @@ class _LoginSceneState extends State<LoginScene> {
             "totalChannelAmt": 0,
           });
       Map result = json.decode(response.toString());
-      print('payment/order/create + ${result}\n\n');
+      // print('payment/order/create + ${result}\n\n');
 
       Response response1 = await Dio().put(
         'https://neiwangwms.ydcfo.com/wms/xs/payment/sign?access_token=${UserManager.currentUser.token}',
@@ -73,7 +73,7 @@ class _LoginSceneState extends State<LoginScene> {
         },
       );
       Map result1 = json.decode(response1.toString());
-      print('xs/payment/sign + ${result1}\n\n');
+      print('xs/payment/sign + ${result1['data']['sign']}\n\n');
 
       WechatManager.instance.pay(
         appId: 'wxd8408f4f68029d35',
