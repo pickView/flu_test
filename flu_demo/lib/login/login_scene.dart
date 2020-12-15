@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flu_demo/login/Model/user_model.dart';
 import 'package:flu_demo/login/code_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,16 +25,24 @@ class _LoginSceneState extends State<LoginScene> {
       return;
     }
     try {
-      Map<String, dynamic> map = Map();
-      map["username"] = 'jinzhu';
-      map["password"] = '123456';
-
-      ///发起get请求
-      Response response = await dio.get(url3, queryParameters: map);
+      Response response = await Dio().post(
+          'https://neiwang2.ydcfo.com/CXF/rs/direct/sys/user/token/get',
+          data: {
+            'username': 'jinzhu',
+            'password': '123456',
+            'deviceType': 'iOS'
+          });
+      Map result = json.decode(response.toString());
+      print(result['data']);
+      // Map userMap = json.decode(result['data']);
+      var user = new UserModel.fromJson(result['data']);
+      UserManager.instance.user = user;
+      print('token + ${UserManager.instance.user.token}');
 
       ///响应数据
-      Map<String, dynamic> data = response.data;
-    } catch (e) {}
+    } catch (e) {
+      print("11${e}");
+    }
   }
 
   Widget buildBody() {
