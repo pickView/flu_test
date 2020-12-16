@@ -11,7 +11,7 @@ class WechatManager extends Wechat {
     if (_instance == null) {
       _instance = WechatManager();
       _instance.registerApp(
-        appId: WECHAT_APPID,s
+        appId: WECHAT_APPID,
         universalLink: WECHAT_UNIVERSAL_LINK,
       );
     }
