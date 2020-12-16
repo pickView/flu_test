@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flu_demo/BaseDefine/sq_color.dart';
 import 'package:flu_demo/login/login_scene.dart';
-import 'package:flu_demo/Mine/me_scene.dart';
 import 'package:flutter/material.dart';
 
 class MineHeader extends StatelessWidget {

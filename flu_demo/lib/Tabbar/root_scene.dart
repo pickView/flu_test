@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flu_demo/BaseDefine/sq_color.dart';
 import 'package:flu_demo/Mine/me_scene.dart';
+import 'package:flu_demo/NetWork/http_request.dart';
 import 'package:flu_demo/Third/wechat_manager.dart';
 import 'package:flu_demo/login/Model/user_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,12 @@ class _RootSceneState extends State<RootScene> {
     setupApp();
     login();
     wechatRegistered();
+    HttpRequest.request('https://httpbin.org/get/s', paras: {'name': 'xu'})
+        .then((value) {
+      print('请求成功-------$value');
+    }).catchError((onError) {
+      print('请求失败root-------$onError');
+    });
   }
 
   wechatRegistered() {

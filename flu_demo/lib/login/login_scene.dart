@@ -102,9 +102,7 @@ class _LoginSceneState extends State<LoginScene> {
       //   req.nonceStr  = result[@"nonceStr"];
 
       ///响应数据
-    } catch (e) {
-      print("11${e}");
-    }
+    } catch (e) {}
   }
 
   Widget buildBody() {
